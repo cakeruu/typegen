@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "build_out": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string",
+                        "enum": ["typescript", "c#"],
+                        "description": "Target programming language for type generation"
+                    },
+                    "out_path": {
+                        "type": "string",
+                        "description": "Output path for generated types"
+                    }
+                },
+                "required": ["lang", "out_path"],
+                "additionalProperties": false
+            }
+        }
+    },
+    "required": ["build_out"],
+    "additionalProperties": false
+}
