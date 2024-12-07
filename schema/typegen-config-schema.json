@@ -16,7 +16,7 @@
                         "enum": ["typescript", "c#"],
                         "description": "Target programming language for type generation"
                     },
-                    "out_path": {
+                    "output_path": {
                         "type": "string",
                         "description": "Output path for generated types"
                     }
