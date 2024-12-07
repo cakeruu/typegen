@@ -21,7 +21,7 @@
                         "description": "Output path for generated types"
                     }
                 },
-                "required": ["lang", "out_path"],
+                "required": ["lang", "output_path"],
                 "additionalProperties": false
             }
         }
