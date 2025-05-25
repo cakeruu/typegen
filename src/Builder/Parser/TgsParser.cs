@@ -274,13 +274,13 @@ public class TgsParser
     /// <returns>HashSet containing all built-in type names</returns>
     private static HashSet<string> GetBuiltInTypes()
     {
-        return new HashSet<string>
-        {
+        return
+        [
             "Uid", "int", "uint", "long", "ulong", "short", "ushort",
             "byte", "sbyte", "float", "double", "decimal", "bool",
             "char", "object", "string", "Array", "List", "Map",
             "Set", "Queue", "Date", "DateTime"
-        };
+        ];
     }
 
     /// <summary>
