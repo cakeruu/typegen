@@ -1,0 +1,50 @@
+{
+  "name": "@typegen/cli",
+  "version": "1.0.0",
+  "description": "TypeGen CLI tool for cross-platform usage",
+  "main": "bin/typegen.js",
+  "bin": {
+    "typegen": "bin/typegen.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "bin/",
+    "binaries/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "preferGlobal": true,
+  "keywords": [
+    "cli",
+    "typegen",
+    "code-generation"
+  ],
+  "author": "cakeruu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cakeruu/typegen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cakeruu/typegen/issues"
+  },
+  "homepage": "https://github.com/cakeruu/typegen#readme"
+}
