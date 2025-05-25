@@ -1,8 +1,11 @@
 {
-  "name": "@typegen/cli",
+  "name": "@cakeru/typegen",
   "version": "1.0.0",
   "description": "TypeGen CLI tool for cross-platform usage",
   "main": "bin/typegen.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "typegen": "bin/typegen.js"
   },

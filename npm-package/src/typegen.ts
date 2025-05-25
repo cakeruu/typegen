@@ -43,7 +43,7 @@ function getExecutablePath(): string {
     if (!fs.existsSync(executablePath)) {
         console.error(`Executable not found: ${executablePath}`);
         console.error(`Platform: ${platform}-${arch}`);
-        console.error('Make sure @typegen/cli is installed globally with: npm install @typegen/cli -g');
+        console.error('Make sure @cakeru/typegen is installed globally with: npm install @cakeru/typegen -g');
         process.exit(1);
     }
 
@@ -67,7 +67,7 @@ function runExecutable(): void {
 
     child.on('error', (error) => {
         console.error('Failed to start typegen:', error.message);
-        console.error('Make sure @typegen/cli is installed globally with: npm install @typegen/cli -g');
+        console.error('Make sure @cakeru/typegen is installed globally with: npm install @cakeru/typegen -g');
         process.exit(1);
     });
 
@@ -90,8 +90,8 @@ const isGlobal = __dirname.includes('node_modules') &&
         process.env.npm_config_global === 'true');
 
 if (!isGlobal) {
-    console.error('Error: @typegen/cli must be installed globally.');
-    console.error('Please run: npm install @typegen/cli -g');
+    console.error('Error: @cakeru/typegen must be installed globally.');
+    console.error('Please run: npm install @cakeru/typegen -g');
     process.exit(1);
 }
 

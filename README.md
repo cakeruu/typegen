@@ -8,8 +8,8 @@
     <a href="https://github.com/cakeruu/typegen/blob/main/LICENSE.md">
       <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
     </a>
-    <a href="https://www.npmjs.com/package/@typegen/cli">
-      <img src="https://img.shields.io/npm/v/typegen-cli?color=green" alt="npm version">
+    <a href="https://www.npmjs.com/package/@cakeru/typegen">
+      <img src="https://img.shields.io/npm/v/@cakeru/typegen?color=green" alt="npm version">
     </a>
   </div>
 </div>
@@ -43,7 +43,7 @@ Typegen allows you to define your types once using a simple schema definition la
 
 ### CLI Tool
 ```bash
-npm install -g @typegen/cli
+npm install -g @cakeru/typegen
 ```
 
 ### VS Code Extension For .tgs File Support
