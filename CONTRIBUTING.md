@@ -61,6 +61,4 @@ make linux-arm # Builds for ARM-based Linux
 
 ### Editor plugins
 - Contribute to the separate [Typegen editor plugins](https://github.com/cakeruu/typegen-editor-plugins)
-- Improve syntax highlighting, IntelliSense, and validation
-
-Thank you for contributing to Typegen! Your efforts help make cross-language type sharing easier for developers everywhere. 
+- Improve syntax highlighting, IntelliSense, and validation 

@@ -13,16 +13,12 @@ public record ParseError(string FilePath, int Line, int Column, string Message)
         return $"{FilePath}:{Line}: {Message}";
     }
 
-    /// <summary>
-    /// Alternative format with column information for editors that support it.
-    /// Format: filepath:line:column: error message
-    /// </summary>
     public string ToStringWithColumn()
     {
         return $"{FilePath}:{Line}:{Column}: {Message}";
     }
 
-    public string ToStringLsp()
+    public string ToStringDaemon()
     {
         return $"{Line}<SPACE>{Message}";
     }
@@ -65,12 +61,6 @@ public class TgsParser
         // Remove whitespace and comments - they're only needed for error reporting
         _tokens = tokens.Where(t => t.Type != TokenType.Whitespace && t.Type != TokenType.Comment).ToList();
         _filePath = filePath;
-    }
-
-    public TgsParser(List<Token> tokens)
-    {
-        _tokens = tokens;
-        _filePath = "unknown";
     }
 
     /// <summary>
@@ -188,7 +178,7 @@ public class TgsParser
         {   
             var errorMessage = lsp switch
             {
-                true => string.Join("<ERROR>", _errors.Select(e => e.ToStringLsp())),
+                true => string.Join("<ERROR>", _errors.Select(e => e.ToStringDaemon())),
                 false => "Parsing failed with the following errors:<ERRORTITLE>" + string.Join("<ERROR>", _errors.Select(e => e.ToString()))
             };
             throw new Exception(errorMessage);
