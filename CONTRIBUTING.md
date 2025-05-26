@@ -63,11 +63,4 @@ make linux-arm # Builds for ARM-based Linux
 - Contribute to the separate [Typegen editor plugins](https://github.com/cakeruu/typegen-editor-plugins)
 - Improve syntax highlighting, IntelliSense, and validation
 
-## Code Style Guidelines
-
-- Use **PascalCase** for public members, **camelCase** for private fields
-- Add XML documentation for public APIs
-- Follow .NET naming conventions
-- Write clear, descriptive variable and method names
-
 Thank you for contributing to Typegen! Your efforts help make cross-language type sharing easier for developers everywhere. 
