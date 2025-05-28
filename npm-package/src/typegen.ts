@@ -93,19 +93,27 @@ async function checkForUpdates(): Promise<void> {
     const latestVersion = await getLatestVersion();
 
     if (latestVersion && compareVersions(currentVersion, latestVersion)) {
-        console.log(`\n🚀 Update available! ${currentVersion} → ${latestVersion}`);
+        // ANSI color codes
+        const blue = '\x1b[34m';
+        const red = '\x1b[31m';
+        const green = '\x1b[32m';
+        const reset = '\x1b[0m';
+
+        console.log(`\n🚀 ${blue}Update available!${reset} ${red}${currentVersion}${reset} → ${green}${latestVersion}${reset}`);
         console.log(`Run: npm install -g @cakeru/typegen\n`);
     }
 }
 
-function runExecutable(): void {
+async function runExecutable(): Promise<void> {
     const executablePath = getExecutablePath();
     const args = process.argv.slice(2);
 
-    // Check for updates in the background (don't block execution)
-    checkForUpdates().catch(() => {
+    // Check for updates and wait for it to complete
+    try {
+        await checkForUpdates();
+    } catch (error) {
         // Silently ignore update check failures
-    });
+    }
 
     // Spawn the platform-specific executable
     const child = spawn(executablePath, args, {

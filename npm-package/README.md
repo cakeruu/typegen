@@ -41,6 +41,10 @@ Typegen allows you to define your types once using a simple schema definition la
 
 ## Installation
 
+> **⚠️ Important Update Notice**  
+> If you have a version lower than **1.1.4**, please update to the latest version to ensure compatibility and access to the newest features
+
+
 ### CLI Tool
 ```bash
 npm install -g @cakeru/typegen

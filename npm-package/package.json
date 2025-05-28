@@ -1,6 +1,6 @@
 {
   "name": "@cakeru/typegen",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "TypeGen CLI tool for cross-platform usage",
   "main": "bin/typegen.js",
   "publishConfig": {
@@ -15,7 +15,9 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "preinstall": "node -e \"try { require('child_process').execSync('taskkill /f /im typegen.exe', {stdio: 'ignore'}); } catch(e) {}\"",
+    "preuninstall": "node -e \"try { require('child_process').execSync('taskkill /f /im typegen.exe', {stdio: 'ignore'}); } catch(e) {}\""
   },
   "files": [
     "bin/",
