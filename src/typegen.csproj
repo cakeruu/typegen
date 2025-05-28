@@ -7,4 +7,32 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <Target Name="ReadVersionFromPackageJson" BeforeTargets="BeforeBuild">
+        <ReadLinesFromFile File="../npm-package/package.json">
+            <Output TaskParameter="Lines" ItemName="PackageJsonLines" />
+        </ReadLinesFromFile>
+        
+        <PropertyGroup>
+            <PackageJsonContent>@(PackageJsonLines, '%0A')</PackageJsonContent>
+            <VersionRegex>"version"\s*:\s*"([^"]+)"</VersionRegex>
+            <PackageVersion>$([System.Text.RegularExpressions.Regex]::Match($(PackageJsonContent), $(VersionRegex)).Groups[1].Value)</PackageVersion>
+            <PackageVersion Condition="'$(PackageVersion)' == ''">1.0.0</PackageVersion>
+        </PropertyGroup>
+        
+        <MakeDir Directories="Generated" />
+        
+        <ItemGroup>
+            <VersionInfoLines Include="namespace typegen%3B" />
+            <VersionInfoLines Include=" " />
+            <VersionInfoLines Include="public static class VersionInfo" />
+            <VersionInfoLines Include="{" />
+            <VersionInfoLines Include="%09public const string Version = &quot;$(PackageVersion)&quot;%3B" />
+            <VersionInfoLines Include="}" />
+        </ItemGroup>
+        
+        <WriteLinesToFile File="Generated/VersionInfo.cs" 
+                         Lines="@(VersionInfoLines)" 
+                         Overwrite="true" />
+    </Target>
+
 </Project>

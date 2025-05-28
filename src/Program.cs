@@ -74,12 +74,17 @@ public static class Program
                 CreateProject(null);
                 break;
             case "--version":
-                Console.WriteLine("Version 1.0.0");
+                GetTypegenVersion();
                 break;
             default:
                 PrintBadArgs(command);
                 break;
         }
+    }
+
+    private static void GetTypegenVersion()
+    {
+        Console.WriteLine(VersionInfo.Version);
     }
 
 
@@ -560,6 +565,7 @@ public static class Program
         Console.WriteLine();
         Console.WriteLine("Options:");
         Console.WriteLine($"{"  -h, --help",-35} Show this help message");
+        Console.WriteLine($"{"  --version",-35} Show version information");
     }
 
     /// <summary>
