@@ -64,6 +64,21 @@ public class TgsParser
     }
 
     /// <summary>
+    /// Creates a new parser for the given content string.
+    /// Tokenizes the content internally and filters out whitespace and comments.
+    /// </summary>
+    /// <param name="content">Source code content to parse</param>
+    /// <param name="filePath">Path to the source file being parsed (for error reporting)</param>
+    public TgsParser(string content, string filePath)
+    {
+        var lexer = new TgsLexer(content);
+        var tokens = lexer.Tokenize();
+        // Remove whitespace and comments - they're only needed for error reporting
+        _tokens = tokens.Where(t => t.Type != TokenType.Whitespace && t.Type != TokenType.Comment).ToList();
+        _filePath = filePath;
+    }
+
+    /// <summary>
     /// Main parsing method. Parses the entire file and returns a SchemaFile object.
     /// Collects all errors and throws an aggregated exception if any errors are found.
     /// 
@@ -76,7 +91,7 @@ public class TgsParser
     /// </summary>
     /// <returns>Parsed schema file containing all definitions</returns>
     /// <exception cref="Exception">Thrown if parsing errors are encountered</exception>
-    public SchemaFile Parse(bool lsp = false)
+    public SchemaFile Parse(bool daemon = false)
     {
         var imports = new List<Import>();
         var variablePaths = new List<VariablePath>();
@@ -175,8 +190,8 @@ public class TgsParser
 
         // If we have errors, throw them all
         if (_errors.Count > 0)
-        {   
-            var errorMessage = lsp switch
+        {
+            var errorMessage = daemon switch
             {
                 true => string.Join("<ERROR>", _errors.Select(e => e.ToStringDaemon())),
                 false => "Parsing failed with the following errors:<ERRORTITLE>" + string.Join("<ERROR>", _errors.Select(e => e.ToString()))

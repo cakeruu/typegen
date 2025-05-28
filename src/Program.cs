@@ -73,7 +73,7 @@ public static class Program
                 }
                 CreateProject(null);
                 break;
-            case "version":
+            case "--version":
                 Console.WriteLine("Version 1.0.0");
                 break;
             default:
@@ -122,7 +122,7 @@ public static class Program
         }
         else
         {
-            Console.WriteLine("Typegen daemon ready. Enter file paths to parse (or 'exit' to quit):");
+            Console.WriteLine("Typegen daemon ready. Enter JSON with content field to parse (or 'exit' to quit):");
         }
         Console.Out.Flush();
 
@@ -152,7 +152,28 @@ public static class Program
 
             try
             {
-                ParseFileAndOutput(line, outputJson, pretty);
+                // Parse JSON input to extract content
+                var jsonDoc = JsonDocument.Parse(line);
+                if (jsonDoc.RootElement.TryGetProperty("content", out var contentElement))
+                {
+                    var content = contentElement.GetString();
+                    if (content != null)
+                    {
+                        ParseContentAndOutput(content, "daemon-input", outputJson, pretty);
+                    }
+                    else
+                    {
+                        OutputError(new Exception("Content field is null"), outputJson, pretty);
+                    }
+                }
+                else
+                {
+                    OutputError(new Exception("JSON must contain a 'content' field"), outputJson, pretty);
+                }
+            }
+            catch (JsonException ex)
+            {
+                OutputError(new Exception($"Invalid JSON: {ex.Message}"), outputJson, pretty);
             }
             catch (Exception ex)
             {
@@ -225,9 +246,37 @@ public static class Program
         }
     }
 
+    private static void ParseContentAndOutput(string content, string sourceName, bool outputJson, bool pretty)
+    {
+        // Parse the content directly using the new constructor
+        var parser = new TgsParser(content, sourceName);
+
+        // Parse the content
+        var schemaFile = parser.Parse(true);
+
+        // Success output
+        if (outputJson)
+        {
+            var result = new
+            {
+                success = true,
+                errors = Array.Empty<string>(),
+                schemas = schemaFile.Schemas.Count,
+                enums = schemaFile.Enums.Count,
+                imports = schemaFile.Imports.Count,
+                source = sourceName
+            };
+            Console.WriteLine(JsonSerializer.Serialize(result, pretty ? Cts.DefaultJsonOptions : JsonSerializerOptions.Default));
+        }
+        else
+        {
+            Console.WriteLine($"✓ {sourceName}: {schemaFile.Schemas.Count} schemas, {schemaFile.Enums.Count} enums");
+        }
+    }
+
     private static void OutputError(Exception ex, bool outputJson, bool pretty)
     {
-        var errors = ExtractErrorsLsp(ex);
+        var errors = ExtractErrorsDaemon(ex);
 
         if (outputJson)
         {
@@ -260,17 +309,13 @@ public static class Program
     /// </summary>
     /// <param name="ex">Exception containing parse errors</param>
     /// <returns>Array of individual error messages</returns>
-    private static string[] ExtractErrorsLsp(Exception ex)
+    private static string[] ExtractErrorsDaemon(Exception ex)
     {
         var message = ex.Message;
-        if (message.StartsWith("Parsing failed with the following errors:"))
-        {
-            return message.Split("<ERROR>", StringSplitOptions.RemoveEmptyEntries)
+        return message.Split("<ERROR>", StringSplitOptions.RemoveEmptyEntries)
                          .Select(line => line.Trim())
                          .Where(line => !string.IsNullOrEmpty(line))
                          .ToArray();
-        }
-        return new[] { ex.Message };
     }
 
     /// <summary>

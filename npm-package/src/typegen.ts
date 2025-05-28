@@ -50,9 +50,62 @@ function getExecutablePath(): string {
     return executablePath;
 }
 
+function getCurrentVersion(): string {
+    try {
+        const packageJsonPath = path.join(path.dirname(__dirname), 'package.json');
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+        return packageJson.version;
+    } catch (error) {
+        return 'unknown';
+    }
+}
+
+async function getLatestVersion(): Promise<string | null> {
+    try {
+        const response = await fetch('https://registry.npmjs.org/@cakeru/typegen');
+        const data = await response.json();
+        return data['dist-tags']?.latest || null;
+    } catch (error) {
+        // Silently fail - don't interrupt the user's workflow
+        return null;
+    }
+}
+
+function compareVersions(current: string, latest: string): boolean {
+    if (current === 'unknown') return false;
+
+    const currentParts = current.split('.').map(Number);
+    const latestParts = latest.split('.').map(Number);
+
+    for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
+        const currentPart = currentParts[i] || 0;
+        const latestPart = latestParts[i] || 0;
+
+        if (latestPart > currentPart) return true;
+        if (latestPart < currentPart) return false;
+    }
+
+    return false; // Versions are equal
+}
+
+async function checkForUpdates(): Promise<void> {
+    const currentVersion = getCurrentVersion();
+    const latestVersion = await getLatestVersion();
+
+    if (latestVersion && compareVersions(currentVersion, latestVersion)) {
+        console.log(`\n🚀 Update available! ${currentVersion} → ${latestVersion}`);
+        console.log(`Run: npm install -g @cakeru/typegen\n`);
+    }
+}
+
 function runExecutable(): void {
     const executablePath = getExecutablePath();
     const args = process.argv.slice(2);
+
+    // Check for updates in the background (don't block execution)
+    checkForUpdates().catch(() => {
+        // Silently ignore update check failures
+    });
 
     // Spawn the platform-specific executable
     const child = spawn(executablePath, args, {

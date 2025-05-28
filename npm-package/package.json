@@ -1,6 +1,6 @@
 {
   "name": "@cakeru/typegen",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "TypeGen CLI tool for cross-platform usage",
   "main": "bin/typegen.js",
   "publishConfig": {
