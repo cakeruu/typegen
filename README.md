@@ -58,8 +58,7 @@ The extension provides:
 - Error detection
 - Auto-completion
 - Schema/Enum validation
-
-**Note:** The extension is currently in development and may be noticeably slow in operation. Performance improvements are planned for future updates.
+- Formatter
 
 <small><i>You can also compile the extension yourself from the source code in the <a href="https://github.com/cakeruu/typegen-editor-plugins">Typegen editor plugins repository</a>.</i></small>
 
