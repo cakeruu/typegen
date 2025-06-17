@@ -42,3 +42,6 @@ linux:
 
 linux-arm:
 	dotnet publish ./src -r linux-arm64 -c Release --self-contained true -p:PublishSingleFile=true -p:PublishDir=$(linuxDir)
+
+dev:
+	dotnet publish ./src -r $(targetRuntime) -c Release --self-contained true -p:PublishSingleFile=true -p:AssemblyName=typegendev -p:PublishDir=$(windowsDir)

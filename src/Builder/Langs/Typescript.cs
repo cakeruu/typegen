@@ -187,22 +187,26 @@ public class Typescript : Lang<TypescriptType>
     /// Generates TypeScript union type definition for an enum.
     /// 
     /// Example output:
-    /// export type CustomerStatus = "Active" | "Inactive" | "Pending";
+    /// export enum CustomerStatus {
+    ///     Active = "Active",
+    ///     Inactive = "Inactive",
+    ///     Pending = "Pending"
+    /// }
     /// </summary>
     /// <param name="content">StringBuilder to append to</param>
     /// <param name="e">Enum definition to generate</param>
     private void AppendEnum(StringBuilder content, TgEnum e)
     {
-        content.Append($"{_firstDirective} {e.Name} = ");
+        content.Append($"export enum {e.Name} {{\n");
         for (int i = 0; i < e.Values.Count; i++)
         {
-            content.Append($"\"{e.Values[i]}\"");
+            content.Append($"  {e.Values[i]} = {i}");
             if (i < e.Values.Count - 1)
             {
-                content.Append(" | ");
+                content.Append(",\n");
             }
         }
-        content.AppendLine(";");
+        content.AppendLine("\n}");
     }
 
     #endregion
